@@ -1,0 +1,34 @@
+name: Lean Build CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          set -o pipefail
+          curl -sSfL https://github.com/leanprover/elan/releases/latest/download/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Verify Lean Configuration
+        working-directory: ./OnionDeBruijnLean
+        run: lean --version
+
+      - name: Fetch Lake Dependencies
+        working-directory: ./OnionDeBruijnLean
+        run: lake update
+
+      - name: Build Lean Project
+        working-directory: ./OnionDeBruijnLean
+        run: lake build
