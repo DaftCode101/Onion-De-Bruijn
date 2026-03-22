@@ -1,6 +1,6 @@
-# Counting Onion de Bruijn Sequences in Lean 4
+# Verification of Results on Counting Onion de Bruijn Sequences in Lean 4
 
-**Authors:** Benjamin Keefer \& Yotam Svoray (University of Utah)
+**Authors of Results:** Benjamin Keefer \& Yotam Svoray (University of Utah)
 
 This repository contains a complete formal verification of the structural graph theory underlying our results on counting Onion De Bruijn Sequences using the **Lean 4** interactive theorem prover. 
 
