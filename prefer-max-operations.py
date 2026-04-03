@@ -1,5 +1,9 @@
 import math
 
+"""
+Author: Benjamin F. Keefer
+Version: April 3rd, 2026
+"""
 class PreferMaxDeBruijn:
     def __init__(self, n, k):
         self.n, self.k = n, k
