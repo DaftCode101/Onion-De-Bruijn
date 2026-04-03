@@ -97,8 +97,11 @@ class PreferMaxDeBruijn:
             
         return ((M,x,y), (x,y,M), (y,M,x))[p_off] if y > 0 else ((M,x,0), (x,0,M))[p_off]
 
-    # Evaluates the topological tree boundary directly in polynomial O(n log(k^n)) time
-    # bypassing O(k^n) Eulerian path traces by ranking canonical subgroups.
+    # NOTE: For the sake of empirical validation in this script, we bypass the 
+    # complex O(n^2 log k) FKM Lyndon unranking math and simply use an O(k^n) 
+    # DFS cached dictionary lookup. The mathematical reduction to polynomial 
+    # time via Möbius inversion is proven in the manuscript and deferred to 
+    # future programmatic implementation
     def p_any(self, w):
         # Step 1: Identify Canonical Rotation Bounding Bracket (C_max)
         n = self.n
