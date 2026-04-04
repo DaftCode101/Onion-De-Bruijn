@@ -7,7 +7,6 @@
 class PreferMaxDeBruijn:
     def __init__(self, n, k):
         self.n, self.k = n, k
-        # Fully uncoupled instance - No graph structures are explicitly loaded into memory.
 
     # Returns the index position of the given word for the prefer max n=2, arbitrary k sequence.
     def p_2(self, w):
