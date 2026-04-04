@@ -228,7 +228,7 @@ class PreferMaxDeBruijn:
         self._layer_cache[k_local] = layer
         return layer
 
-    """Returns the absolute integer volume of a word in the Infinite Onion Sequence."""
+    # Returns the absolute integer volume of a word in the Infinite Onion Sequence.
     def onion_index(self, w):
         M = max(w)
         if M == 0: 
@@ -244,7 +244,7 @@ class PreferMaxDeBruijn:
         
         return (M**self.n) + L_w
 
-    """Projects an absolute integer volume natively back into physical string coordinates."""
+    # Projects an absolute integer volume natively back into physical string coordinates.
     def onion_word(self, idx):
         if idx == 0: 
             return tuple([0] * self.n)
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     print(" MATHEMATICAL VERIFICATION OF PREFER-MAX METRIZATION")
     print("=========================================================")
     
-    # 1. Visually Show Bijection for n=2, k=5
+    # 1. Visually Shows Bijection for n=2, k=5
     print("\n[Phase 1] Exhaustive Bijective Mapping testing for n=2, k=5")
     P2 = PreferMaxDeBruijn(n=2, k=5)
     words_2 = set()
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     assert len(words_2) == total_2, "MATH FAILURE: Lexicographical space not fully covered."
     print(">> SUCCESS! n=2 bijection linearly maps over all states without collision.\n")
 
-    # 2. Visually Show Bijection for n=3, k=3
+    # 2. Visually Shows Bijection for n=3, k=3
     print("[Phase 2] Exhaustive Bijective Mapping testing for n=3, k=3")
     P3 = PreferMaxDeBruijn(n=3, k=3)
     words_3 = set()
@@ -340,7 +340,7 @@ if __name__ == "__main__":
     assert len(words_3) == total_3, "MATH FAILURE: Lexicographical space not fully covered."
     print(">> SUCCESS! n=3 bijection correctly partitions cyclical trees over all states.\n")
 
-    # 3. Show Abelian Properties 
+    # 3. Shows Abelian Properties 
     print("[Phase 3] Algebraic Isomorphism & Abelian Properties")
     w1, w2, w3 = (1, 2, 2), (0, 1, 2), (2, 2, 0)
     res_add = P3.add(w1, w2)
