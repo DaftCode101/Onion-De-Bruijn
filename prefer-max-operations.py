@@ -208,7 +208,7 @@ if __name__ == "__main__":
     assert len(words_3) == total_3, "MATH FAILURE: Lexicographical space not fully covered."
     print(">> SUCCESS! n=3 bijection correctly partitions cyclical trees over all states.\n")
 
-    # 3. Prove Abelian Properties 
+    # 3. Show Abelian Properties 
     print("[Phase 3] Algebraic Isomorphism & Abelian Properties")
     w1, w2, w3 = (1, 2, 2), (0, 1, 2), (2, 2, 0)
     res_add = P3.add(w1, w2)
@@ -223,8 +223,8 @@ if __name__ == "__main__":
     assert P3.add(P3.add(w1, w2), w3) == P3.add(w1, P3.add(w2, w3)), "Addition is nonassociative!"
     print("  Associativity ((w1 ⊕ w2) ⊕ w3 == w1 ⊕ (w2 ⊕ w3)):  TRUE")
     
-    # 4. Prove Arbitrary N generalizations (n=4, k=2)
-    print("\n[Phase 4] Arbitrary N Topological Mapping (n=4, k=2)")
+    # 4. Show some arbitrary n generalizations (n=4, k=2)
+    print("\n[Phase 4] Arbitrary n Topological Mapping (n=4, k=2)")
     P4 = PreferMaxDeBruijn(n=4, k=2)
     words_4 = set()
     total_4 = P4.k ** P4.n
