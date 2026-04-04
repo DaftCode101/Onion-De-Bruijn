@@ -1,3 +1,7 @@
+import math
+import time
+import random
+
 """
     Python implementation of the Prefer Max De Bruijn sequence operation idea.
     Generalized in O(n^2log(k)) time complexity for arbitrary n, k.
@@ -6,10 +10,6 @@
     Author: Benjamin F Keefer
     Version: April 4th, 2026
 """
-import math
-import time
-import random
-
 class PreferMaxDeBruijn:
     def __init__(self, n, k=None):
         self.n, self.k = n, k
@@ -117,7 +117,7 @@ class PreferMaxDeBruijn:
         a_alpha = v[:shift_idx]
         a_beta = v[shift_idx:]
         
-        # Construct Matrix DP bounding (yielding O(n^3) or O(n^2 log k) pythonically)
+        # Construct Matrix DP bounding
         w_star = list(a_alpha) + [k-1] * len(a_beta)
         m = len(w_star)
         
@@ -186,12 +186,12 @@ class PreferMaxDeBruijn:
     # ONION DE BRUIJN GENERALIZATION (INFINITE SEQUENCE)
     # =========================================================================
 
-    def _layer_fkm(self, k_local):
-        """
+    """
         Natively constructs the boundary layer via FKM algorithm. 
         In true O(n^2 log k) evaluation, this relies on Acedański Lyndon unranking.
         For rigorous empirical validation, we cache the exact boundary locally to confirm logic.
-        """
+    """
+    def _layer_fkm(self, k_local):
         if k_local in self._layer_cache:
             return self._layer_cache[k_local]
             
@@ -229,8 +229,8 @@ class PreferMaxDeBruijn:
         self._layer_cache[k_local] = layer
         return layer
 
+    """Returns the absolute integer volume of a word in the Infinite Onion Sequence."""
     def onion_index(self, w):
-        """Returns the absolute integer volume of a word in the Infinite Onion Sequence."""
         M = max(w)
         if M == 0: 
             return 0
@@ -245,8 +245,8 @@ class PreferMaxDeBruijn:
         
         return (M**self.n) + L_w
 
+    """Projects an absolute integer volume natively back into physical string coordinates."""
     def onion_word(self, idx):
-        """Projects an absolute integer volume natively back into physical string coordinates."""
         if idx == 0: 
             return tuple([0] * self.n)
         
@@ -265,15 +265,15 @@ class PreferMaxDeBruijn:
         aligned_layer = self._layer_fkm(k_local)
         return aligned_layer[R_pmax]
 
+    """w1 ⊕ w2 natively in the Infinite Onion sequence space."""
     def onion_add(self, w1, w2):
-        """w1 ⊕ w2 natively in the Infinite Onion sequence space."""
         return self.onion_word(self.onion_index(w1) + self.onion_index(w2))
 
-    def test_onion_timing(self, duration=10):
-        """
+    """
         Optional 10-second timing test to confirm the positional index 
         function going both ways correctly for the Onion generalization n>3 case.
-        """
+    """
+    def test_onion_timing(self, duration=10):
         print(f"\n[Phase 5] 10-Second Timing Test: Onion Generalization (n={self.n}, k -> ∞)")
         print(f"Testing the Algebraic Layer Projection mapping natively over the Onion Topology...")
         
@@ -341,7 +341,7 @@ if __name__ == "__main__":
     assert len(words_3) == total_3, "MATH FAILURE: Lexicographical space not fully covered."
     print(">> SUCCESS! n=3 bijection correctly partitions cyclical trees over all states.\n")
 
-    # 3. Prove Abelian Properties 
+    # 3. Show Abelian Properties 
     print("[Phase 3] Algebraic Isomorphism & Abelian Properties")
     w1, w2, w3 = (1, 2, 2), (0, 1, 2), (2, 2, 0)
     res_add = P3.add(w1, w2)
@@ -356,7 +356,7 @@ if __name__ == "__main__":
     assert P3.add(P3.add(w1, w2), w3) == P3.add(w1, P3.add(w2, w3)), "Addition is nonassociative!"
     print("  Associativity ((w1 ⊕ w2) ⊕ w3 == w1 ⊕ (w2 ⊕ w3)):  TRUE")
     
-    # 4. Prove Arbitrary N generalizations (n=4, k=2)
+    # 4. Show Arbitrary N generalizations (n=4, k=2)
     print("\n[Phase 4] Arbitrary N Topological Mapping (n=5, k=3)")
     P4 = PreferMaxDeBruijn(n=5, k=3)
     words_4 = set()
