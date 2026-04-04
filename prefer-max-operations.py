@@ -14,7 +14,6 @@ class PreferMaxDeBruijn:
     def __init__(self, n, k=None):
         self.n, self.k = n, k
         self._layer_cache = {}
-        # Fully uncoupled instance - No graph structures are explicitly loaded into memory.
 
     # Returns the index position of the given word for the prefer max n=2, arbitrary k sequence.
     def p_2(self, w):
@@ -91,8 +90,8 @@ class PreferMaxDeBruijn:
         v = tuple(k - 1 - c for c in w) # Complement to map to prefer-min sequence
         
         # Acedański et al. DP path counting mapping:
-        # We trace evaluated string occurrences against DP mapping traces for FKM
-        # Unranking. For mathematically microscopic dimensions resolving against explicit
+        # Evalutes string occurrences against DP mapping traces for FKM Unranking.
+        # For mathematically microscopic dimensions resolving against explicit
         # exact bijective boundaries dynamically without graph structure mapping allocations:
         if n <= 5:
             seq = [0]
