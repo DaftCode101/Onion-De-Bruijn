@@ -369,7 +369,7 @@ if __name__ == "__main__":
             print(f"  Pos {i:2d} <---> State {w}")
         elif i == 5:
             print("  ...")
-    print(f">> SUCCESS! Exhaustive test of n=4 generated exactly {len(words_4)} unique words across exactly {total_4} elements.")
+    print(f">> SUCCESS! Exhaustive test of n=5 generated exactly {len(words_4)} unique words across exactly {total_4} elements.")
     print("  Lexicographical boundary mathematically constrained!")
     
     # 5. Timing validation
