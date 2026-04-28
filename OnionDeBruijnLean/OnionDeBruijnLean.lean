@@ -5,10 +5,4 @@ import OnionDeBruijnLean.BlockReduction
 import OnionDeBruijnLean.Laplacian
 import OnionDeBruijnLean.Main
 import OnionDeBruijnLean.Spectrum
-import OnionDeBruijnLean.Constrained
-import OnionDeBruijnLean.NestedBlock
-import OnionDeBruijnLean.OverlapDeterminant
-import OnionDeBruijnLean.MatrixDeterminant
-import OnionDeBruijnLean.IncidenceGeometry
-import OnionDeBruijnLean.OverlapEquivalence
 import OnionDeBruijnLean.preferMaxOperations
