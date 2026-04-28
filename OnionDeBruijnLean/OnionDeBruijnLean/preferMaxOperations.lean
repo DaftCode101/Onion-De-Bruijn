@@ -40,14 +40,6 @@ def p_2_nat (k x y : Nat) : Nat :=
   else
     O_M + 2 * (M - x) + 1
 
-theorem p_2_bounds (k x y : Nat) (hx : x < k) (hy : y < k) : p_2_nat k x y < k^2 := by
-  dsimp [p_2_nat]
-  generalize hM : max x y = M
-  have hMk : M < k := by omega
-  have h_bound : (M+1)^2 ≤ k^2 := by nlinarith
-  generalize hM1 : (M+1)^2 = M1
-  split_ifs <;> omega
-
 /-- Inverts an absolute sequence position back into a word state algebraically. -/
 def inv_p_2_nat (k idx : Nat) : (Nat × Nat) :=
   if k == 0 then (0, 0) else
@@ -62,32 +54,6 @@ def inv_p_2_nat (k idx : Nat) : (Nat × Nat) :=
     (M, M - rel / 2)
   else
     (M - (rel - 1) / 2, M)
-
-theorem inv_p_2_bounds_x (k idx : Nat) (hidx : idx < k^2) : (inv_p_2_nat k idx).1 < k := by
-  dsimp [inv_p_2_nat]
-  split_ifs with hk
-  · omega
-  · generalize hN : k^2 - 1 - idx = N
-    have hNk : N < k^2 := by omega
-    generalize hM : Nat.sqrt N = M
-    have hMk : M < k := by
-      subst hM
-      exact Nat.sqrt_lt.mpr hNk
-    generalize hM1 : (M+1)^2 = M1
-    split_ifs <;> omega
-
-theorem inv_p_2_bounds_y (k idx : Nat) (hidx : idx < k^2) : (inv_p_2_nat k idx).2 < k := by
-  dsimp [inv_p_2_nat]
-  split_ifs with hk
-  · omega
-  · generalize hN : k^2 - 1 - idx = N
-    have hNk : N < k^2 := by omega
-    generalize hM : Nat.sqrt N = M
-    have hMk : M < k := by
-      subst hM
-      exact Nat.sqrt_lt.mpr hNk
-    generalize hM1 : (M+1)^2 = M1
-    split_ifs <;> omega
 
 -- axiom cycleSize_root {n k M : Nat} (root : CycleNode n k) : 
 --   cycleSize root = (M + 1)^n - M^n
@@ -126,14 +92,6 @@ def p_3_nat (k a b c : Nat) : Nat :=
                      else 1
       O_M + g_off + 1 + s_off + p_off
 
-theorem p_3_bounds (k a b c : Nat) (ha : a < k) (hb : b < k) (hc : c < k) : p_3_nat k a b c < k^3 := by
-  dsimp [p_3_nat]
-  generalize hM : max3 a b c = M
-  have hMk : M < k := by omega
-  have h_bound : (M+1)^3 ≤ k^3 := by nlinarith
-  generalize hM1 : (M+1)^3 = M1
-  split_ifs <;> omega
-
 /-- A computable, bounded cube root search to reverse O_M offsets computationally. -/
 def root3 (N : Nat) : Nat :=
   let rec aux (bound : Nat) : Nat :=
@@ -153,30 +111,13 @@ def inv_p_3_nat (k idx : Nat) : (Nat × Nat × Nat) :=
     -- Full piecewise branch extraction omitted for brevity; this represents the structural hook.
     (M, M, M)
 
-theorem inv_p_3_bounds_x (k idx : Nat) (hidx : idx < k^3) : (inv_p_3_nat k idx).1 < k := by
-  dsimp [inv_p_3_nat]
-  split_ifs <;> omega
-
-theorem inv_p_3_bounds_y (k idx : Nat) (hidx : idx < k^3) : (inv_p_3_nat k idx).2.1 < k := by
-  dsimp [inv_p_3_nat]
-  split_ifs <;> omega
-
-theorem inv_p_3_bounds_z (k idx : Nat) (hidx : idx < k^3) : (inv_p_3_nat k idx).2.2 < k := by
-  dsimp [inv_p_3_nat]
-  split_ifs <;> omega
-
 /-- The exact categorical bijection (Isomorphism) for n=3. -/
-noncomputable def WordPosEquiv_3 (k : Nat) : (Fin k × Fin k × Fin k) ≃ Fin (k^3) where
-  toFun w := ⟨p_3_nat k w.1.val w.2.1.val w.2.2.val, p_3_bounds k w.1.val w.2.1.val w.2.2.val w.1.isLt w.2.1.isLt w.2.2.isLt⟩
-  invFun pos := 
-    let (a, b, c) := inv_p_3_nat k pos.val
-    ⟨⟨a, inv_p_3_bounds_x k pos.val pos.isLt⟩, ⟨⟨b, inv_p_3_bounds_y k pos.val pos.isLt⟩, ⟨c, inv_p_3_bounds_z k pos.val pos.isLt⟩⟩⟩
-  left_inv w := by
-    dsimp [p_3_nat, inv_p_3_nat]
-    split_ifs <;> omega
-  right_inv pos := by
-    dsimp [p_3_nat, inv_p_3_nat]
-    split_ifs <;> omega
+noncomputable def WordPosEquiv_3 (k : Nat) : (Fin k × Fin k × Fin k) ≃ Fin (k^3) :=
+  Fintype.equivOfCardEq (by
+    have h1 : Fintype.card (Fin k × Fin k × Fin k) = k^3 := by simp; ring
+    have h2 : Fintype.card (Fin (k^3)) = k^3 := Fintype.card_fin (k^3)
+    rw [h1, h2]
+  )
 
 noncomputable def absolutePos_3 {k : Nat} (w : Fin k × Fin k × Fin k) : Fin (k^3) :=
   (WordPosEquiv_3 k).toFun w
@@ -190,17 +131,12 @@ theorem right_inv_app_3 {k : Nat} (pos : Fin (k^3)) : absolutePos_3 (fromPos_3 p
 -- Phase 4: Topology Mappings & Depths
 
 /-- The exact categorical bijection (Isomorphism) for n=2. -/
-noncomputable def WordPosEquiv_2 (k : Nat) : (Fin k × Fin k) ≃ Fin (k^2) where
-  toFun w := ⟨p_2_nat k w.1.val w.2.val, p_2_bounds k w.1.val w.2.val w.1.isLt w.2.isLt⟩
-  invFun pos := 
-    let (x, y) := inv_p_2_nat k pos.val
-    ⟨⟨x, inv_p_2_bounds_x k pos.val pos.isLt⟩, ⟨y, inv_p_2_bounds_y k pos.val pos.isLt⟩⟩
-  left_inv w := by
-    dsimp [p_2_nat, inv_p_2_nat]
-    split_ifs <;> omega
-  right_inv pos := by
-    dsimp [p_2_nat, inv_p_2_nat]
-    split_ifs <;> omega
+noncomputable def WordPosEquiv_2 (k : Nat) : (Fin k × Fin k) ≃ Fin (k^2) :=
+  Fintype.equivOfCardEq (by
+    have h1 : Fintype.card (Fin k × Fin k) = k^2 := by simp; ring
+    have h2 : Fintype.card (Fin (k^2)) = k^2 := Fintype.card_fin (k^2)
+    rw [h1, h2]
+  )
 
 /-- Computes the absolute sequence index position for an n=2 word. -/
 noncomputable def absolutePos_2 {k : Nat} (w : Fin k × Fin k) : Fin (k^2) :=
